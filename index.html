@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCheck</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Login Modal -->
+  <!-- <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <h2>Login</h2>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      <label for="password">Password</label>
+      <div class="password-field">
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <i class="toggle-password" onclick="togglePasswordVisibility('password')">&#128065;</i>
+      </div>
+      <button onclick="performLogin()">Login</button>
+      <p>Don't have an account? <button type="button" onclick="showCreateAccount()">Create Account</button></p>
+    </div>
+  </div> -->
+
+  <!-- Create Account Modal -->
+  <div id="create-account-modal" class="modal">
+    <div class="modal-content">
+      <h2>Create Account</h2>
+      <form onsubmit="return handleCreateAccount()" action="connect.php" method="POST">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+        <label for="registerUsername">Username</label>
+        <input type="text" id="registerUsername" name="registerUsername" placeholder="Create a username" required>
+        <label for="registerPassword">Password</label>
+        <div class="password-field">
+          <input type="password" id="registerPassword" name="registerPassword" placeholder="Create a password" required>
+          <i class="toggle-password" onclick="togglePasswordVisibility('registerPassword')">&#128065;</i>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-field">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+          <i class="toggle-password" onclick="togglePasswordVisibility('confirmPassword')">&#128065;</i>
+        </div>
+        <button type="submit">Create Account</button>
+        <p>Already have an account? <button type="button" onclick="showLogin()">Back to Login</button></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo" onclick="showSection('hero')" style="cursor: pointer;">PCheck</div>
+    <nav>
+      <a href="#" onclick="showSection('build-pc')">Build a PC</a>
+      <a href="#" onclick="showSection('pre-built')">Pre-Built</a>
+      <button id="dark-mode-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Section for MAIN SCREEN -->
+    <section id="hero" class="content-section active">
+      <div class="hero">
+        <div class="text-content">
+          <h1>Unleash Gaming</h1>
+          <p>Non-stop productivity with PCheck’s powerful hardware.<br>
+              PCheck provides computers and computer parts for your heavy gaming and work needs.
+          </p>
+          <button onclick="explore()">Explore</button>
+        </div>
+        <div class="image-content">
+          <img id="dynamicImage" src="/images/homepc.png" alt="Product Image">
+        </div>
+      </div>
+    </section>
+
+<!-- selection modal -->
+    <div id="selection-modal" class="modal">
+      <div class="modal-content">
+        <label for="sort-options">Sort by:</label>
+        <select id="sort-options" onchange="applySorting()">
+            <option value="price-asc">Price (Low to High)</option>
+            <option value="price-desc">Price (High to Low)</option>
+            <option value="socket">Socket Size</option>
+        </select>
+        <h2 id="modal-title">Select a Component</h2>
+        <div id="selection-list" class="selection-list">
+
+        </div>
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+
+<!-- Pre-Built Modal -->
+<div id="pre-built-modal" class="modal">
+    <div class="modal-content">
+        <h2 id="pre-built-modal-title">Pre-Built PC</h2>
+        <div id="pre-built-modal-content">
+            <!-- Dynamically populated with pre-built PC details -->
+        </div>
+    </div>
+</div>
+
+<!-- Pre-Built Section -->
+<section id="pre-built" class="content-section">
+    <div class="pre-built-container">
+        <!-- Button Box Container -->
+        <div class="pre-built-button-box-container">
+            <div class="pre-built-button-box" onclick="showPreBuiltModal('gaming')">
+                <h2>Gaming & Creativity</h2>
+                <p>For gamers and content creators.</p>
+                <img src="images/gaming.png" alt="Gaming Icon">
+            </div>
+            <div class="pre-built-button-box" onclick="showPreBuiltModal('productivity')">
+                <h2>Designed for Productivity</h2>
+                <p>Optimized for work and multitasking.</p>
+                <img src="images/productivity.png" alt="Productivity Icon">
+            </div>
+        </div>
+        <!-- Info Card -->
+        <div class="info-card">
+            <div class="overlay">
+                <img src="images/prebuilt.png" alt="Why Go Pre-Built">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pre-built-details" class="content-section">
+    <div class="pre-built-details-container">
+        <h2>Pre-Built PC</h2>
+        <div id="pre-built-details-content">
+            <!-- Dynamically populated with pre-built PC details -->
+        </div>
+    </div>
+</section>
+
+<!-- Section for Build a PC -->
+<section id="build-pc" class="content-section">
+  <div class="build-pc-content">
+  <button id="view-builds-btn" class="view-builds-btn" onclick="viewSavedBuilds()">View Saved Builds</button>
+    <h2>Build Your PC</h2>
+    <div class="component-grid">
+      <button class="button-box" onclick="showSelection('processor')">
+        <div class="text">
+          <h2>PROCESSOR</h2>
+          <p>Choose your processor</p>
+        </div>
+        <img src="images/processor.png" alt="Processor Icon">
+      </button>
+      <button class="button-box" onclick="showSelection('motherboard')">
+        <div class="text">
+          <h2>MOTHERBOARD</h2>
+          <p>Choose your motherboard</p>
+        </div>
+        <img src="images/motherboard.png" alt="Motherboard">
+      </button>
+      <button class="button-box" onclick="showSelection('monitor')">
+        <div class="text">
+          <h2>MONITOR</h2>
+          <p>Choose your monitor</p>
+        </div>
+        <img src="images/monitor.png" alt="Monitor">
+      </button>
+      <button class="button-box" onclick="showSelection('memory')">
+        <div class="text">
+          <h2>MEMORY</h2>
+          <p>Choose your RAM</p>
+        </div>
+        <img src="images/memory.png" alt="Memory">
+      </button>
+      <button class="button-box" onclick="showSelection('storage')">
+        <div class="text">
+          <h2>STORAGE</h2>
+          <p>Choose your hard disk</p>
+        </div>
+        <img src="images/storage.png" alt="Storage">
+      </button>
+      <button class="button-box" onclick="showSelection('gpu')">
+        <div class="text">
+          <h2>GPU</h2>
+          <p>Choose your video card</p>
+        </div>
+        <img src="images/gpu.png" alt="GPU">
+      </button>
+      <button class="button-box" onclick="showSelection('case')">
+        <div class="text">
+          <h2>CASE</h2>
+          <p>Choose your PC case</p>
+        </div>
+        <img src="images/case.png" alt="Case">
+      </button>
+      <button class="button-box" onclick="showSelection('psu')">
+        <div class="text">
+          <h2>POWER SUPPLY</h2>
+          <p>Choose your PSU</p>
+        </div>
+        <img src="images/psu.png" alt="Power Supply">
+      </button>
+      <button class="button-box" onclick="showSelection('cooler')">
+        <div class="text">
+          <h2>COOLER</h2>
+          <p>Choose your processor cooler</p>
+        </div>
+        <img src="images/cooler.png" alt="CPU Cooler">
+      </button>
+      <button class="button-box" onclick="showSelection('mouse')">
+        <div class="text">
+          <h2>MOUSE</h2>
+          <p>Choose your mouse</p>
+        </div>
+        <img src="images/mouse.png" alt="Mouse">
+      </button>
+      <button class="button-box" onclick="showSelection('keyboard')">
+        <div class="text">
+          <h2>KEYBOARD</h2>
+          <p>Choose your keyboard</p>
+        </div>
+        <img src="images/keyboard.png" alt="Keyboard">
+      </button>
+      <button class="button-box" onclick="showSelection('headphone')">
+        <div class="text">
+          <h2>HEADPHONE</h2>
+          <p>Choose your headphone</p>
+        </div>
+        <img src="images/headset.png" alt="Headphone">
+      </button>
+    </div>
+    <!-- Summary Section -->
+    <div class="summary">
+      <div class="summary-header">
+        <h3>YOUR PRODUCTS AND ESTIMATED PRICE</h3>
+      </div>
+      <div id="product-list" class="product-list"></div>
+      <div id="total-price" class="total-price">
+        <p><strong>Price:</strong></p>
+      </div>
+      <div id="estimated-wattage" class="estimated-wattage">
+        <p>⚡ Estimated Wattage: </p>
+      </div>
+      
+      <!-- View Summary Button -->
+      <button id="view-summary-btn" class="view-summary-btn">View Summary</button>
+    </div>
+</section>
+
+<!-- Summary Modal -->
+<div id="summary-modal" class="sm-modal">
+  <div class="sm-modal-content">
+    <span class="close-btn" onclick="closeSummaryModal()">&times;</span>
+    <h2>Detailed Build Summary</h2>
+    <div id="summary-details"></div>
+    <button id="save-build" onclick="saveBuild()">Save Build</button>
+  </div>
+</div>
+
+<div id="savedBuildsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Saved Builds</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="savedBuildsModalContent">
+                <!-- Builds will be inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
